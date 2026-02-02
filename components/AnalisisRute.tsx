@@ -1,6 +1,6 @@
 'use client'
 
-import { useRoute } from '@/contexts/RouteContext'
+import { useRoute } from '@/contexts/KonteksRute'
 import { BarChart3, TrendingUp, Clock, MapPin, Route, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
 

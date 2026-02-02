@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRoute } from '@/contexts/RouteContext'
+import { useRoute } from '@/contexts/KonteksRute'
 import { Navigation, Clock, MapPin, ArrowRight, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 

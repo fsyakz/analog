@@ -1,6 +1,6 @@
 'use client'
 
-import { useRoute } from '@/contexts/RouteContext'
+import { useRoute } from '@/contexts/KonteksRute'
 import { motion } from 'framer-motion'
 import { MapPin, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react'
 

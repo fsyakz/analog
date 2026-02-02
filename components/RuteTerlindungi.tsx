@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/KonteksAutentikasi'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, ReactNode } from 'react'
 import { motion } from 'framer-motion'

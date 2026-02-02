@@ -21,20 +21,23 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
-    // Check for saved user in localStorage
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
+    // Check for saved user in localStorage (only on client)
+    if (typeof window !== 'undefined') {
       try {
-        setUser(JSON.parse(savedUser))
+        const savedUser = localStorage.getItem('user')
+        if (savedUser) {
+          const userData = JSON.parse(savedUser)
+          setUser(userData)
+        }
       } catch (error) {
+        console.error('Error loading user from localStorage:', error)
         localStorage.removeItem('user')
       }
     }
-    setIsLoading(false)
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {

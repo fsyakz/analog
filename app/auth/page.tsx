@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/KonteksAutentikasi'
 import { motion } from 'framer-motion'
 import { User, Mail, Lock, Eye, EyeOff, LogIn, UserPlus, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
@@ -250,8 +250,8 @@ export default function AuthPage() {
               {isLogin ? 'Belum punya akun? Daftar di sini' : 'Sudah punya akun? Masuk di sini'}
             </button>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   )
 }

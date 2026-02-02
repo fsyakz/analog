@@ -1,7 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { AuthProvider } from '@/contexts/AuthContext'
-import { RouteProvider } from '@/contexts/RouteContext'
+import { AuthProvider } from '@/contexts/KonteksAutentikasi'
+import { RouteProvider } from '@/contexts/KonteksRute'
 
 const inter = Inter({ subsets: ['latin'] })
 
