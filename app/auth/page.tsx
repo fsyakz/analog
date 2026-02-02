@@ -45,6 +45,7 @@ export default function AuthPage() {
         success = await register(formData.email, formData.password, formData.name)
         if (success) {
           setRegistrationSuccess(true)
+          setIsSubmitting(false)
           // Switch to login mode after successful registration
           setTimeout(() => {
             setIsLogin(true)
@@ -53,6 +54,7 @@ export default function AuthPage() {
           }, 3000)
         } else {
           setError('Registrasi gagal. Periksa kembali data Anda.')
+          setIsSubmitting(false)
         }
       }
 
