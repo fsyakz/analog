@@ -16,52 +16,18 @@ const quickLocations: QuickLocation[] = [
   // Jakarta Pusat
   { id: 'jkt1', name: 'Monas', address: 'Jl. Medan Merdeka, Jakarta Pusat', coordinates: { lat: -6.1754, lng: 106.8272 }, category: 'Jakarta Pusat' },
   { id: 'jkt2', name: 'Bundaran HI', address: 'Jl. MH Thamrin, Jakarta Pusat', coordinates: { lat: -6.1944, lng: 106.8229 }, category: 'Jakarta Pusat' },
-  { id: 'jkt3', name: 'Grand Indonesia', address: 'Jl. MH Thamrin No.1, Jakarta Pusat', coordinates: { lat: -6.1950, lng: 106.8195 }, category: 'Jakarta Pusat' },
   
   // Jakarta Selatan
-  { id: 'jkt4', name: 'Senayan City', address: 'Jl. Asia Afrika No.19, Jakarta Selatan', coordinates: { lat: -6.2187, lng: 106.8026 }, category: 'Jakarta Selatan' },
-  { id: 'jkt5', name: 'Pondok Indah Mall', address: 'Jl. Metro Pondok Indah, Jakarta Selatan', coordinates: { lat: -6.2625, lng: 106.7816 }, category: 'Jakarta Selatan' },
-  { id: 'jkt6', name: 'Kemang', address: 'Jl. Kemang Raya, Jakarta Selatan', coordinates: { lat: -6.2615, lng: 106.8106 }, category: 'Jakarta Selatan' },
-  
-  // Jakarta Barat & Utara
-  { id: 'jkt7', name: 'Taman Anggrek Mall', address: 'Jl. Letjen S. Parman No.28, Jakarta Barat', coordinates: { lat: -6.1756, lng: 106.7955 }, category: 'Jakarta Barat' },
-  { id: 'jkt8', name: 'PIK', address: 'Jl. Pantai Indah Kapuk, Jakarta Utara', coordinates: { lat: -6.0996, lng: 106.7429 }, category: 'Jakarta Utara' },
-  { id: 'jkt9', name: 'Ancol', address: 'Jl. Lodan Timur No.7, Jakarta Utara', coordinates: { lat: -6.1256, lng: 106.8316 }, category: 'Jakarta Utara' },
-  
-  // Jakarta Timur
-  { id: 'jkt10', name: 'Cibubur Junction', address: 'Jl. Alternatif Cibubur, Jakarta Timur', coordinates: { lat: -6.3725, lng: 106.8789 }, category: 'Jakarta Timur' },
+  { id: 'jkt3', name: 'Senayan City', address: 'Jl. Asia Afrika No.19, Jakarta Selatan', coordinates: { lat: -6.2187, lng: 106.8026 }, category: 'Jakarta Selatan' },
   
   // Bogor
   { id: 'bgr1', name: 'Kebun Raya Bogor', address: 'Jl. Ir. H. Juanda No.13, Bogor', coordinates: { lat: -6.5989, lng: 106.8060 }, category: 'Bogor' },
-  { id: 'bgr2', name: 'Botani Square', address: 'Jl. Raya Pajajaran No.27, Bogor', coordinates: { lat: -6.5947, lng: 106.7892 }, category: 'Bogor' },
-  { id: 'bgr3', name: 'Puncak', address: 'Jl. Raya Puncak, Cisarua, Bogor', coordinates: { lat: -6.7038, lng: 106.9894 }, category: 'Bogor' },
-  
-  // Depok
-  { id: 'dpk1', name: 'Margo City', address: 'Jl. Margonda Raya No.358, Depok', coordinates: { lat: -6.3636, lng: 106.8317 }, category: 'Depok' },
-  { id: 'dpk2', name: 'Universitas Indonesia', address: 'Kampus UI Depok, Depok', coordinates: { lat: -6.3645, lng: 106.8267 }, category: 'Depok' },
-  
-  // Tangerang
-  { id: 'tng1', name: 'Summarecon Mall Serpong', address: 'Jl. Gading Serpong Boulevard, Tangerang', coordinates: { lat: -6.2382, lng: 106.6296 }, category: 'Tangerang' },
-  { id: 'tng2', name: 'AEON Mall BSD', address: 'Jl. BSD Raya Utama, Tangerang Selatan', coordinates: { lat: -6.2989, lng: 106.6470 }, category: 'Tangerang' },
-  { id: 'tng3', name: 'Bandara Soetta', address: 'Jl. Raya Bandara Soekarno-Hatta, Tangerang', coordinates: { lat: -6.1256, lng: 106.6558 }, category: 'Tangerang' },
-  
-  // Bekasi
-  { id: 'bks1', name: 'Summarecon Mall Bekasi', address: 'Jl. Ahmad Yani, Bekasi', coordinates: { lat: -6.2383, lng: 106.9756 }, category: 'Bekasi' },
-  { id: 'bks2', name: 'Metropolitan Mall', address: 'Jl. KH. Noer Alie, Bekasi', coordinates: { lat: -6.2348, lng: 106.9736 }, category: 'Bekasi' },
   
   // Bandung
   { id: 'bdg1', name: 'Gedung Sate', address: 'Jl. Diponegoro No.22, Bandung', coordinates: { lat: -6.8915, lng: 107.6107 }, category: 'Bandung' },
-  { id: 'bdg2', name: 'Trans Studio Bandung', address: 'Jl. Gatot Subroto No.289, Bandung', coordinates: { lat: -6.9217, lng: 107.6225 }, category: 'Bandung' },
-  { id: 'bdg3', name: 'Paris Van Java', address: 'Jl. Sukajadi No.131-139, Bandung', coordinates: { lat: -6.8896, lng: 107.6058 }, category: 'Bandung' },
-  { id: 'bdg4', name: 'Dago', address: 'Jl. Ir. H. Juanda, Bandung', coordinates: { lat: -6.8915, lng: 107.6107 }, category: 'Bandung' },
-  { id: 'bdg5', name: 'Lembang', address: 'Jl. Raya Lembang, Bandung Barat', coordinates: { lat: -6.8193, lng: 107.6225 }, category: 'Bandung' },
   
-  // Cirebon
-  { id: 'crb1', name: 'Keraton Kasepuhan', address: 'Jl. Kasepuhan No.43, Cirebon', coordinates: { lat: -6.7147, lng: 108.5607 }, category: 'Cirebon' },
-  { id: 'crb2', name: 'Grage City Mall', address: 'Jl. Cipto Mangunkusumo No.99, Cirebon', coordinates: { lat: -6.7369, lng: 108.5536 }, category: 'Cirebon' },
-  
-  // Purwakarta
-  { id: 'pwk1', name: 'Situ Buleud', address: 'Jl. Kusumah Atmaja, Purwakarta', coordinates: { lat: -6.5389, lng: 107.4481 }, category: 'Purwakarta' }
+  // Tangerang
+  { id: 'tng1', name: 'Bandara Soetta', address: 'Jl. Raya Bandara Soekarno-Hatta, Tangerang', coordinates: { lat: -6.1256, lng: 106.6558 }, category: 'Tangerang' }
 ]
 
 export default function LocationQuickAdd() {
@@ -94,16 +60,16 @@ export default function LocationQuickAdd() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-3">
           <Clock className="w-6 h-6 text-primary-600" />
-          <h2 className="text-2xl font-bold text-neutral-800">Tambah Lokasi Cepat</h2>
+          <h2 className="text-2xl font-bold text-neutral-800">Lokasi Penting</h2>
         </div>
         <div className="text-sm text-neutral-600">
-          {quickLocations.length} lokasi penting
+          {quickLocations.length} lokasi strategis
         </div>
       </div>
 
       <div className="mb-4">
         <p className="text-sm text-neutral-600 mb-4">
-          Tambahkan lokasi-lokasi penting di Jabodetabek dan Jawa Barat dengan satu klik
+          Tambahkan lokasi-lokasi strategis di Jabodetabek & Jawa Barat
         </p>
       </div>
 
@@ -170,7 +136,7 @@ export default function LocationQuickAdd() {
 
       <div className="mt-6 p-4 bg-beige-50 rounded-lg border border-beige-200">
         <p className="text-sm text-beige-800">
-          <strong>💡 Tips:</strong> Pilih beberapa lokasi dari kategori yang berbeda untuk mendapatkan rute yang optimal. Lokasi yang sudah ditambahkan akan ditandai dengan warna hijau.
+          <strong>💡 Tips:</strong> Pilih lokasi strategis untuk optimasi rute terbaik. Lokasi yang sudah ditambahkan akan ditandai dengan warna hijau.
         </p>
       </div>
     </motion.div>

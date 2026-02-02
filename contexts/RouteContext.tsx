@@ -129,7 +129,6 @@ export function RouteProvider({ children }: { children: React.ReactNode }) {
         address: 'Jl. MH Thamrin No.1, Jakarta Pusat',
         coordinates: { lat: -6.1950, lng: 106.8195 }
       },
-      
       // Jakarta Selatan
       {
         id: '4',
@@ -143,175 +142,26 @@ export function RouteProvider({ children }: { children: React.ReactNode }) {
         address: 'Jl. Metro Pondok Indah, Jakarta Selatan',
         coordinates: { lat: -6.2625, lng: 106.7816 }
       },
-      {
-        id: '6',
-        name: 'Kemang',
-        address: 'Jl. Kemang Raya, Jakarta Selatan',
-        coordinates: { lat: -6.2615, lng: 106.8106 }
-      },
-      
-      // Jakarta Barat
-      {
-        id: '7',
-        name: 'Taman Anggrek Mall',
-        address: 'Jl. Letjen S. Parman No.28, Jakarta Barat',
-        coordinates: { lat: -6.1756, lng: 106.7955 }
-      },
-      {
-        id: '8',
-        name: 'PIK (Pantai Indah Kapuk)',
-        address: 'Jl. Pantai Indah Kapuk, Jakarta Utara',
-        coordinates: { lat: -6.0996, lng: 106.7429 }
-      },
-      
-      // Jakarta Timur
-      {
-        id: '9',
-        name: 'Klender Mall',
-        address: 'Jl. I Gusti Ngurah Rai No.97, Jakarta Timur',
-        coordinates: { lat: -6.2297, lng: 106.9000 }
-      },
-      {
-        id: '10',
-        name: 'Cibubur Junction',
-        address: 'Jl. Alternatif Cibubur, Jakarta Timur',
-        coordinates: { lat: -6.3725, lng: 106.8789 }
-      },
-      
-      // Jakarta Utara
-      {
-        id: '11',
-        name: 'Ancol',
-        address: 'Jl. Lodan Timur No.7, Jakarta Utara',
-        coordinates: { lat: -6.1256, lng: 106.8316 }
-      },
-      {
-        id: '12',
-        name: 'Mangga Dua',
-        address: 'Jl. Mangga Dua Raya, Jakarta Utara',
-        coordinates: { lat: -6.1333, lng: 106.8333 }
-      },
-      
       // Bogor
       {
-        id: '13',
+        id: '6',
         name: 'Kebun Raya Bogor',
         address: 'Jl. Ir. H. Juanda No.13, Bogor',
         coordinates: { lat: -6.5989, lng: 106.8060 }
       },
-      {
-        id: '14',
-        name: 'Botani Square',
-        address: 'Jl. Raya Pajajaran No.27, Bogor',
-        coordinates: { lat: -6.5947, lng: 106.7892 }
-      },
-      {
-        id: '15',
-        name: 'Puncak',
-        address: 'Jl. Raya Puncak, Cisarua, Bogor',
-        coordinates: { lat: -6.7038, lng: 106.9894 }
-      },
-      
-      // Depok
-      {
-        id: '16',
-        name: 'Margo City',
-        address: 'Jl. Margonda Raya No.358, Depok',
-        coordinates: { lat: -6.3636, lng: 106.8317 }
-      },
-      {
-        id: '17',
-        name: 'Universitas Indonesia',
-        address: 'Kampus UI Depok, Depok',
-        coordinates: { lat: -6.3645, lng: 106.8267 }
-      },
-      
-      // Tangerang
-      {
-        id: '18',
-        name: 'Summarecon Mall Serpong',
-        address: 'Jl. Gading Serpong Boulevard, Tangerang',
-        coordinates: { lat: -6.2382, lng: 106.6296 }
-      },
-      {
-        id: '19',
-        name: 'AEON Mall BSD',
-        address: 'Jl. BSD Raya Utama, Tangerang Selatan',
-        coordinates: { lat: -6.2989, lng: 106.6470 }
-      },
-      {
-        id: '20',
-        name: 'Bandara Soekarno-Hatta',
-        address: 'Jl. Raya Bandara Soekarno-Hatta, Tangerang',
-        coordinates: { lat: -6.1256, lng: 106.6558 }
-      },
-      
-      // Bekasi
-      {
-        id: '21',
-        name: 'Summarecon Mall Bekasi',
-        address: 'Jl. Ahmad Yani, Bekasi',
-        coordinates: { lat: -6.2383, lng: 106.9756 }
-      },
-      {
-        id: '22',
-        name: 'Metropolitan Mall',
-        address: 'Jl. KH. Noer Alie, Bekasi',
-        coordinates: { lat: -6.2348, lng: 106.9736 }
-      },
-      
       // Bandung
       {
-        id: '23',
+        id: '7',
         name: 'Gedung Sate',
         address: 'Jl. Diponegoro No.22, Bandung',
         coordinates: { lat: -6.8915, lng: 107.6107 }
       },
+      // Tangerang
       {
-        id: '24',
-        name: 'Trans Studio Bandung',
-        address: 'Jl. Gatot Subroto No.289, Bandung',
-        coordinates: { lat: -6.9217, lng: 107.6225 }
-      },
-      {
-        id: '25',
-        name: 'Paris Van Java',
-        address: 'Jl. Sukajadi No.131-139, Bandung',
-        coordinates: { lat: -6.8896, lng: 107.6058 }
-      },
-      {
-        id: '26',
-        name: 'Dago',
-        address: 'Jl. Ir. H. Juanda, Bandung',
-        coordinates: { lat: -6.8915, lng: 107.6107 }
-      },
-      {
-        id: '27',
-        name: 'Lembang',
-        address: 'Jl. Raya Lembang, Bandung Barat',
-        coordinates: { lat: -6.8193, lng: 107.6225 }
-      },
-      
-      // Cirebon
-      {
-        id: '28',
-        name: 'Keraton Kasepuhan',
-        address: 'Jl. Kasepuhan No.43, Cirebon',
-        coordinates: { lat: -6.7147, lng: 108.5607 }
-      },
-      {
-        id: '29',
-        name: 'Grage City Mall',
-        address: 'Jl. Cipto Mangunkusumo No.99, Cirebon',
-        coordinates: { lat: -6.7369, lng: 108.5536 }
-      },
-      
-      // Purwakarta
-      {
-        id: '30',
-        name: 'Situ Buleud',
-        address: 'Jl. Kusumah Atmaja, Purwakarta',
-        coordinates: { lat: -6.5389, lng: 107.4481 }
+        id: '8',
+        name: 'Bandara Soetta',
+        address: 'Jl. Raya Bandara Soekarno-Hatta, Tangerang',
+        coordinates: { lat: -6.1256, lng: 106.6558 }
       }
     ]
     
