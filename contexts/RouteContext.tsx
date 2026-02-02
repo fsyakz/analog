@@ -1,194 +1,426 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useReducer, useEffect } from 'react'
 
-export interface Location {
+interface Location {
   id: string
   name: string
+  address: string
   coordinates: {
     lat: number
     lng: number
   }
-  address?: string
 }
 
-export interface RouteResult {
+interface RouteResult {
   locations: Location[]
+  optimizedOrder: string[]
   totalDistance: number
   estimatedTime: number
-  optimizedOrder: string[]
 }
 
-interface RouteContextType {
+interface RouteState {
   locations: Location[]
-  selectedLocation: Location | null
   routeResult: RouteResult | null
   isCalculating: boolean
-  addLocation: (location: Omit<Location, 'id'>) => void
-  removeLocation: (id: string) => void
-  selectLocation: (location: Location) => void
-  calculateRoute: () => Promise<void>
-  clearRoute: () => void
+  selectedStartLocation: string | null
 }
 
-const RouteContext = createContext<RouteContextType | undefined>(undefined)
+type RouteAction =
+  | { type: 'ADD_LOCATION'; payload: Location }
+  | { type: 'REMOVE_LOCATION'; payload: string }
+  | { type: 'SET_LOCATIONS'; payload: Location[] }
+  | { type: 'CALCULATE_ROUTE_START' }
+  | { type: 'CALCULATE_ROUTE_SUCCESS'; payload: RouteResult }
+  | { type: 'CALCULATE_ROUTE_ERROR' }
+  | { type: 'CLEAR_ROUTE' }
+  | { type: 'SET_START_LOCATION'; payload: string }
 
-export function RouteProvider({ children }: { children: ReactNode }) {
-  const [locations, setLocations] = useState<Location[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-  const [routeResult, setRouteResult] = useState<RouteResult | null>(null)
-  const [isCalculating, setIsCalculating] = useState(false)
+const initialState: RouteState = {
+  locations: [],
+  routeResult: null,
+  isCalculating: false,
+  selectedStartLocation: null,
+}
 
-  // Default locations for demo
-  React.useEffect(() => {
-    const defaultLocations: Location[] = [
+function routeReducer(state: RouteState, action: RouteAction): RouteState {
+  switch (action.type) {
+    case 'ADD_LOCATION':
+      return {
+        ...state,
+        locations: [...state.locations, action.payload],
+      }
+    case 'REMOVE_LOCATION':
+      return {
+        ...state,
+        locations: state.locations.filter(loc => loc.id !== action.payload),
+        routeResult: state.routeResult ? {
+          ...state.routeResult,
+          locations: state.routeResult.locations.filter(loc => loc.id !== action.payload)
+        } : null,
+      }
+    case 'SET_LOCATIONS':
+      return {
+        ...state,
+        locations: action.payload,
+      }
+    case 'CALCULATE_ROUTE_START':
+      return {
+        ...state,
+        isCalculating: true,
+      }
+    case 'CALCULATE_ROUTE_SUCCESS':
+      return {
+        ...state,
+        isCalculating: false,
+        routeResult: action.payload,
+      }
+    case 'CALCULATE_ROUTE_ERROR':
+      return {
+        ...state,
+        isCalculating: false,
+      }
+    case 'CLEAR_ROUTE':
+      return {
+        ...state,
+        routeResult: null,
+      }
+    case 'SET_START_LOCATION':
+      return {
+        ...state,
+        selectedStartLocation: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+const RouteContext = createContext<{
+  state: RouteState
+  addLocation: (location: Location) => void
+  removeLocation: (id: string) => void
+  calculateRoute: () => Promise<void>
+  clearRoute: () => void
+  selectStartLocation: (id: string) => void
+} | null>(null)
+
+export function RouteProvider({ children }: { children: React.ReactNode }) {
+  const [state, dispatch] = useReducer(routeReducer, initialState)
+
+  // Load sample data on mount
+  useEffect(() => {
+    const sampleLocations: Location[] = [
+      // Jakarta Pusat
       {
         id: '1',
-        name: 'Central Business District Jakarta',
-        coordinates: { lat: -6.2088, lng: 106.8456 },
-        address: 'Jakarta Pusat, Indonesia'
+        name: 'Monas',
+        address: 'Jl. Medan Merdeka, Gambir, Jakarta Pusat',
+        coordinates: { lat: -6.1753924, lng: 106.8271528 }
       },
       {
         id: '2',
-        name: 'Menteng Business Center',
-        coordinates: { lat: -6.1944, lng: 106.8229 },
-        address: 'Menteng, Jakarta Pusat'
+        name: 'Bundaran HI',
+        address: 'Jl. MH Thamrin, Menteng, Jakarta Pusat',
+        coordinates: { lat: -6.1944, lng: 106.8229 }
       },
       {
         id: '3',
-        name: 'Senayan Business Park',
-        coordinates: { lat: -6.2187, lng: 106.8025 },
-        address: 'Senayan, Jakarta Pusat'
+        name: 'Grand Indonesia',
+        address: 'Jl. MH Thamrin No.1, Jakarta Pusat',
+        coordinates: { lat: -6.1950, lng: 106.8195 }
       },
+      
+      // Jakarta Selatan
       {
         id: '4',
-        name: 'Thamrin Corporate Tower',
-        coordinates: { lat: -6.1930, lng: 106.8228 },
-        address: 'Thamrin, Jakarta Pusat'
+        name: 'Senayan City',
+        address: 'Jl. Asia Afrika No.19, Senayan, Jakarta Selatan',
+        coordinates: { lat: -6.2187, lng: 106.8026 }
       },
       {
         id: '5',
-        name: 'Sudirman Office Tower',
-        coordinates: { lat: -6.2088, lng: 106.8196 },
-        address: 'Sudirman, Jakarta Pusat'
+        name: 'Pondok Indah Mall',
+        address: 'Jl. Metro Pondok Indah, Jakarta Selatan',
+        coordinates: { lat: -6.2625, lng: 106.7816 }
+      },
+      {
+        id: '6',
+        name: 'Kemang',
+        address: 'Jl. Kemang Raya, Jakarta Selatan',
+        coordinates: { lat: -6.2615, lng: 106.8106 }
+      },
+      
+      // Jakarta Barat
+      {
+        id: '7',
+        name: 'Taman Anggrek Mall',
+        address: 'Jl. Letjen S. Parman No.28, Jakarta Barat',
+        coordinates: { lat: -6.1756, lng: 106.7955 }
+      },
+      {
+        id: '8',
+        name: 'PIK (Pantai Indah Kapuk)',
+        address: 'Jl. Pantai Indah Kapuk, Jakarta Utara',
+        coordinates: { lat: -6.0996, lng: 106.7429 }
+      },
+      
+      // Jakarta Timur
+      {
+        id: '9',
+        name: 'Klender Mall',
+        address: 'Jl. I Gusti Ngurah Rai No.97, Jakarta Timur',
+        coordinates: { lat: -6.2297, lng: 106.9000 }
+      },
+      {
+        id: '10',
+        name: 'Cibubur Junction',
+        address: 'Jl. Alternatif Cibubur, Jakarta Timur',
+        coordinates: { lat: -6.3725, lng: 106.8789 }
+      },
+      
+      // Jakarta Utara
+      {
+        id: '11',
+        name: 'Ancol',
+        address: 'Jl. Lodan Timur No.7, Jakarta Utara',
+        coordinates: { lat: -6.1256, lng: 106.8316 }
+      },
+      {
+        id: '12',
+        name: 'Mangga Dua',
+        address: 'Jl. Mangga Dua Raya, Jakarta Utara',
+        coordinates: { lat: -6.1333, lng: 106.8333 }
+      },
+      
+      // Bogor
+      {
+        id: '13',
+        name: 'Kebun Raya Bogor',
+        address: 'Jl. Ir. H. Juanda No.13, Bogor',
+        coordinates: { lat: -6.5989, lng: 106.8060 }
+      },
+      {
+        id: '14',
+        name: 'Botani Square',
+        address: 'Jl. Raya Pajajaran No.27, Bogor',
+        coordinates: { lat: -6.5947, lng: 106.7892 }
+      },
+      {
+        id: '15',
+        name: 'Puncak',
+        address: 'Jl. Raya Puncak, Cisarua, Bogor',
+        coordinates: { lat: -6.7038, lng: 106.9894 }
+      },
+      
+      // Depok
+      {
+        id: '16',
+        name: 'Margo City',
+        address: 'Jl. Margonda Raya No.358, Depok',
+        coordinates: { lat: -6.3636, lng: 106.8317 }
+      },
+      {
+        id: '17',
+        name: 'Universitas Indonesia',
+        address: 'Kampus UI Depok, Depok',
+        coordinates: { lat: -6.3645, lng: 106.8267 }
+      },
+      
+      // Tangerang
+      {
+        id: '18',
+        name: 'Summarecon Mall Serpong',
+        address: 'Jl. Gading Serpong Boulevard, Tangerang',
+        coordinates: { lat: -6.2382, lng: 106.6296 }
+      },
+      {
+        id: '19',
+        name: 'AEON Mall BSD',
+        address: 'Jl. BSD Raya Utama, Tangerang Selatan',
+        coordinates: { lat: -6.2989, lng: 106.6470 }
+      },
+      {
+        id: '20',
+        name: 'Bandara Soekarno-Hatta',
+        address: 'Jl. Raya Bandara Soekarno-Hatta, Tangerang',
+        coordinates: { lat: -6.1256, lng: 106.6558 }
+      },
+      
+      // Bekasi
+      {
+        id: '21',
+        name: 'Summarecon Mall Bekasi',
+        address: 'Jl. Ahmad Yani, Bekasi',
+        coordinates: { lat: -6.2383, lng: 106.9756 }
+      },
+      {
+        id: '22',
+        name: 'Metropolitan Mall',
+        address: 'Jl. KH. Noer Alie, Bekasi',
+        coordinates: { lat: -6.2348, lng: 106.9736 }
+      },
+      
+      // Bandung
+      {
+        id: '23',
+        name: 'Gedung Sate',
+        address: 'Jl. Diponegoro No.22, Bandung',
+        coordinates: { lat: -6.8915, lng: 107.6107 }
+      },
+      {
+        id: '24',
+        name: 'Trans Studio Bandung',
+        address: 'Jl. Gatot Subroto No.289, Bandung',
+        coordinates: { lat: -6.9217, lng: 107.6225 }
+      },
+      {
+        id: '25',
+        name: 'Paris Van Java',
+        address: 'Jl. Sukajadi No.131-139, Bandung',
+        coordinates: { lat: -6.8896, lng: 107.6058 }
+      },
+      {
+        id: '26',
+        name: 'Dago',
+        address: 'Jl. Ir. H. Juanda, Bandung',
+        coordinates: { lat: -6.8915, lng: 107.6107 }
+      },
+      {
+        id: '27',
+        name: 'Lembang',
+        address: 'Jl. Raya Lembang, Bandung Barat',
+        coordinates: { lat: -6.8193, lng: 107.6225 }
+      },
+      
+      // Cirebon
+      {
+        id: '28',
+        name: 'Keraton Kasepuhan',
+        address: 'Jl. Kasepuhan No.43, Cirebon',
+        coordinates: { lat: -6.7147, lng: 108.5607 }
+      },
+      {
+        id: '29',
+        name: 'Grage City Mall',
+        address: 'Jl. Cipto Mangunkusumo No.99, Cirebon',
+        coordinates: { lat: -6.7369, lng: 108.5536 }
+      },
+      
+      // Purwakarta
+      {
+        id: '30',
+        name: 'Situ Buleud',
+        address: 'Jl. Kusumah Atmaja, Purwakarta',
+        coordinates: { lat: -6.5389, lng: 107.4481 }
       }
     ]
-    setLocations(defaultLocations)
+    
+    dispatch({ type: 'SET_LOCATIONS', payload: sampleLocations })
   }, [])
 
-  const addLocation = (location: Omit<Location, 'id'>) => {
-    const newLocation: Location = {
-      ...location,
-      id: Date.now().toString()
-    }
-    setLocations(prev => [...prev, newLocation])
-  }
-
-  const removeLocation = (id: string) => {
-    setLocations(prev => prev.filter(loc => loc.id !== id))
-    if (selectedLocation?.id === id) {
-      setSelectedLocation(null)
-    }
-  }
-
-  const selectLocation = (location: Location) => {
-    setSelectedLocation(location)
-  }
-
-  const calculateRoute = async () => {
-    if (locations.length < 2) {
-      throw new Error('Minimal 2 lokasi diperlukan untuk menghitung rute')
-    }
-
-    setIsCalculating(true)
-    
-    try {
-      // Simulate API call for route calculation
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // Greedy Nearest Neighbor Algorithm
-      const optimizedOrder = greedyNearestNeighbor(locations)
-      const totalDistance = calculateTotalDistance(optimizedOrder)
-      const estimatedTime = Math.round(totalDistance * 2) // 2 minutes per km
-      
-      setRouteResult({
-        locations: optimizedOrder,
-        totalDistance,
-        estimatedTime,
-        optimizedOrder: optimizedOrder.map(loc => loc.id)
-      })
-    } catch (error) {
-      throw new Error('Gagal menghitung rute. Silakan coba lagi.')
-    } finally {
-      setIsCalculating(false)
-    }
-  }
-
-  const clearRoute = () => {
-    setRouteResult(null)
-    setSelectedLocation(null)
-  }
-
-  // Greedy Nearest Neighbor Algorithm
-  const greedyNearestNeighbor = (locations: Location[]): Location[] => {
-    if (locations.length === 0) return []
-    
-    const unvisited = [...locations]
-    const route: Location[] = []
-    let current = unvisited.shift()!
-    route.push(current)
-    
-    while (unvisited.length > 0) {
-      let nearestIndex = 0
-      let nearestDistance = calculateDistance(current, unvisited[0])
-      
-      for (let i = 1; i < unvisited.length; i++) {
-        const distance = calculateDistance(current, unvisited[i])
-        if (distance < nearestDistance) {
-          nearestDistance = distance
-          nearestIndex = i
-        }
-      }
-      
-      current = unvisited.splice(nearestIndex, 1)[0]
-      route.push(current)
-    }
-    
-    return route
-  }
-
-  const calculateDistance = (loc1: Location, loc2: Location): number => {
+  const calculateDistance = (coord1: {lat: number, lng: number}, coord2: {lat: number, lng: number}): number => {
     const R = 6371 // Earth's radius in km
-    const dLat = (loc2.coordinates.lat - loc1.coordinates.lat) * Math.PI / 180
-    const dLng = (loc2.coordinates.lng - loc1.coordinates.lng) * Math.PI / 180
+    const dLat = (coord2.lat - coord1.lat) * Math.PI / 180
+    const dLng = (coord2.lng - coord1.lng) * Math.PI / 180
     const a = 
       Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(loc1.coordinates.lat * Math.PI / 180) * Math.cos(loc2.coordinates.lat * Math.PI / 180) *
+      Math.cos(coord1.lat * Math.PI / 180) * Math.cos(coord2.lat * Math.PI / 180) *
       Math.sin(dLng/2) * Math.sin(dLng/2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
     return R * c
   }
 
-  const calculateTotalDistance = (route: Location[]): number => {
-    let total = 0
-    for (let i = 0; i < route.length - 1; i++) {
-      total += calculateDistance(route[i], route[i + 1])
+  const greedyNearestNeighbor = (locations: Location[]): Location[] => {
+    if (locations.length === 0) return []
+    
+    const unvisited = [...locations]
+    const route: Location[] = []
+    
+    // Start from the first location or selected start location
+    let current = state.selectedStartLocation 
+      ? unvisited.find(loc => loc.id === state.selectedStartLocation) || unvisited[0]
+      : unvisited[0]
+    
+    route.push(current)
+    unvisited.splice(unvisited.indexOf(current), 1)
+    
+    while (unvisited.length > 0) {
+      let nearest = unvisited[0]
+      let minDistance = calculateDistance(current.coordinates, nearest.coordinates)
+      
+      for (let i = 1; i < unvisited.length; i++) {
+        const distance = calculateDistance(current.coordinates, unvisited[i].coordinates)
+        if (distance < minDistance) {
+          minDistance = distance
+          nearest = unvisited[i]
+        }
+      }
+      
+      route.push(nearest)
+      current = nearest
+      unvisited.splice(unvisited.indexOf(nearest), 1)
     }
-    return Math.round(total * 100) / 100
+    
+    return route
+  }
+
+  const addLocation = (location: Location) => {
+    dispatch({ type: 'ADD_LOCATION', payload: location })
+  }
+
+  const removeLocation = (id: string) => {
+    dispatch({ type: 'REMOVE_LOCATION', payload: id })
+  }
+
+  const calculateRoute = async () => {
+    dispatch({ type: 'CALCULATE_ROUTE_START' })
+    
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      const optimizedRoute = greedyNearestNeighbor(state.locations)
+      const totalDistance = optimizedRoute.reduce((sum, loc, index) => {
+        if (index === 0) return 0
+        return sum + calculateDistance(optimizedRoute[index - 1].coordinates, loc.coordinates)
+      }, 0)
+      
+      const estimatedTime = Math.round(totalDistance * 2) // Assume 30 km/h average speed
+      
+      dispatch({
+        type: 'CALCULATE_ROUTE_SUCCESS',
+        payload: {
+          locations: optimizedRoute,
+          optimizedOrder: optimizedRoute.map(loc => loc.id),
+          totalDistance: Math.round(totalDistance * 100) / 100,
+          estimatedTime,
+        },
+      })
+    } catch (error) {
+      console.error('Route calculation failed:', error)
+      dispatch({ type: 'CALCULATE_ROUTE_ERROR' })
+    }
+  }
+
+  const clearRoute = () => {
+    dispatch({ type: 'CLEAR_ROUTE' })
+  }
+
+  const selectStartLocation = (id: string) => {
+    dispatch({ type: 'SET_START_LOCATION', payload: id })
   }
 
   return (
-    <RouteContext.Provider value={{
-      locations,
-      selectedLocation,
-      routeResult,
-      isCalculating,
-      addLocation,
-      removeLocation,
-      selectLocation,
-      calculateRoute,
-      clearRoute
-    }}>
+    <RouteContext.Provider
+      value={{
+        state,
+        addLocation,
+        removeLocation,
+        calculateRoute,
+        clearRoute,
+        selectStartLocation,
+      }}
+    >
       {children}
     </RouteContext.Provider>
   )
@@ -196,8 +428,19 @@ export function RouteProvider({ children }: { children: ReactNode }) {
 
 export function useRoute() {
   const context = useContext(RouteContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useRoute must be used within a RouteProvider')
   }
-  return context
+  
+  return {
+    locations: context.state.locations,
+    routeResult: context.state.routeResult,
+    isCalculating: context.state.isCalculating,
+    selectedStartLocation: context.state.selectedStartLocation,
+    addLocation: context.addLocation,
+    removeLocation: context.removeLocation,
+    calculateRoute: context.calculateRoute,
+    clearRoute: context.clearRoute,
+    selectStartLocation: context.selectStartLocation,
+  }
 }

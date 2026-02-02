@@ -1,18 +1,22 @@
 'use client'
 
 import { useRoute } from '@/contexts/RouteContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { motion } from 'framer-motion'
-import { Navigation, BarChart3, Menu, X, MapPin, TrendingUp, Clock, Route } from 'lucide-react'
+import { Navigation, BarChart3, Menu, X, MapPin, TrendingUp, Clock, Route, LogOut, User } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import LocationForm from '@/components/LocationForm'
 import LocationList from '@/components/LocationList'
+import LocationQuickAdd from '@/components/LocationQuickAdd'
 import MapVisualization from '@/components/MapVisualization'
 import RouteDirections from '@/components/RouteDirections'
 import RouteAnalytics from '@/components/RouteAnalytics'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function HomePage() {
   const { locations, routeResult, isCalculating, calculateRoute, clearRoute } = useRoute()
+  const { user, logout } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleCalculateRoute = async () => {
@@ -23,64 +27,82 @@ export default function HomePage() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-beige-50 via-primary-50 to-beige-100">
-      {/* Navigation */}
-      <nav className="glass sticky top-0 z-50 border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Navigation className="w-8 h-8 text-primary-600" />
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-beige-600 bg-clip-text text-transparent">
-                RouteOptimize
-              </span>
-            </div>
-            
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="#dashboard" className="nav-link">Dashboard</Link>
-              <Link href="#locations" className="nav-link">Lokasi</Link>
-              <Link href="#visualization" className="nav-link">Visualisasi</Link>
-              <Link href="#directions" className="nav-link">Arah</Link>
-              <Link href="#analytics" className="nav-link">Analisis</Link>
-              <Link href="#results" className="nav-link">Hasil</Link>
-            </div>
+  const handleLogout = () => {
+    logout()
+  }
 
-            <div className="flex items-center space-x-4">
-              <Link 
-                href="/auth"
-                className="btn-outline text-sm px-4 py-2"
-              >
-                Login
-              </Link>
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg hover:bg-neutral-100"
-              >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
+  return (
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gradient-to-br from-beige-50 via-primary-50 to-beige-100">
+        {/* Navigation */}
+        <nav className="glass sticky top-0 z-50 border-b border-white/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center space-x-2">
+                <Navigation className="w-8 h-8 text-primary-600" />
+                <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-beige-600 bg-clip-text text-transparent">
+                  RouteOptimize
+                </span>
+              </div>
+              
+              <div className="hidden md:flex items-center space-x-6">
+                <Link href="#dashboard" className="nav-link">Dashboard</Link>
+                <Link href="#locations" className="nav-link">Lokasi</Link>
+                <Link href="#visualization" className="nav-link">Visualisasi</Link>
+                <Link href="#directions" className="nav-link">Arah</Link>
+                <Link href="#analytics" className="nav-link">Analisis</Link>
+                <Link href="#results" className="nav-link">Hasil</Link>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <div className="hidden md:flex items-center space-x-2">
+                  <User className="w-4 h-4 text-neutral-600" />
+                  <span className="text-sm text-neutral-600">{user?.name || user?.email}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-lg hover:bg-red-100 transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-5 h-5 text-red-600" />
+                </button>
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="md:hidden p-2 rounded-lg hover:bg-neutral-100"
+                >
+                  {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden glass border-t border-white/20"
-          >
-            <div className="px-4 py-2 space-y-1">
-              <Link href="#dashboard" className="block py-2 nav-link">Dashboard</Link>
-              <Link href="#locations" className="block py-2 nav-link">Lokasi</Link>
-              <Link href="#visualization" className="block py-2 nav-link">Visualisasi</Link>
-              <Link href="#directions" className="block py-2 nav-link">Arah</Link>
-              <Link href="#analytics" className="block py-2 nav-link">Analisis</Link>
-              <Link href="#results" className="block py-2 nav-link">Hasil</Link>
-              <Link href="/auth" className="block py-2 nav-link">Login</Link>
-            </div>
-          </motion.div>
-        )}
-      </nav>
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="md:hidden glass border-t border-white/20"
+            >
+              <div className="px-4 py-2 space-y-1">
+                <Link href="#dashboard" className="block py-2 nav-link">Dashboard</Link>
+                <Link href="#locations" className="block py-2 nav-link">Lokasi</Link>
+                <Link href="#visualization" className="block py-2 nav-link">Visualisasi</Link>
+                <Link href="#directions" className="block py-2 nav-link">Arah</Link>
+                <Link href="#analytics" className="block py-2 nav-link">Analisis</Link>
+                <Link href="#results" className="block py-2 nav-link">Hasil</Link>
+                <div className="flex items-center justify-between py-2 border-t border-neutral-200">
+                  <span className="text-sm text-neutral-600">{user?.name || user?.email}</span>
+                  <button
+                    onClick={handleLogout}
+                    className="text-sm text-red-600 hover:text-red-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </nav>
 
       {/* Hero Section */}
       <section id="dashboard" className="py-12 px-4 sm:px-6 lg:px-8">
@@ -178,6 +200,9 @@ export default function HomePage() {
                 <LocationForm />
               </div>
               <div>
+                <LocationQuickAdd />
+              </div>
+              <div>
                 <LocationList />
               </div>
             </div>
@@ -254,7 +279,8 @@ export default function HomePage() {
           </div>
         </section>
       )}
-    </div>
+      </div>
+    </ProtectedRoute>
   )
 }
 

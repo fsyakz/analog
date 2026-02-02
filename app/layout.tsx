@@ -1,12 +1,13 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { AuthProvider } from '@/contexts/AuthContext'
 import { RouteProvider } from '@/contexts/RouteContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'RouteOptimize - Modern Route Optimization',
-  description: 'Advanced route optimization with real-time visualization and intelligent algorithms',
+  title: 'RouteOptimize - Optimasi Rute Distribusi Modern',
+  description: 'Platform canggih untuk mengoptimalkan rute pengiriman dengan algoritma Greedy Nearest Neighbor dan visualisasi real-time.',
 }
 
 export default function RootLayout({
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className={inter.className}>
-        <RouteProvider>
-          {children}
-        </RouteProvider>
+        <AuthProvider>
+          <RouteProvider>
+            {children}
+          </RouteProvider>
+        </AuthProvider>
       </body>
     </html>
   )

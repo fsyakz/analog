@@ -1,64 +1,126 @@
 'use client'
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { 
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  User
-} from 'firebase/auth'
-import { auth } from '@/lib/firebase'
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+
+interface User {
+  id: string
+  email: string
+  name: string
+}
 
 interface AuthContextType {
   user: User | null
-  loading: boolean
-  login: (email: string, password: string) => Promise<void>
-  register: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
+  login: (email: string, password: string) => Promise<boolean>
+  register: (email: string, password: string, name: string) => Promise<boolean>
+  logout: () => void
+  isLoading: boolean
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | null>(null)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user)
-      setLoading(false)
-    })
-
-    return unsubscribe
+    // Check for saved user in localStorage
+    const savedUser = localStorage.getItem('user')
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser))
+      } catch (error) {
+        localStorage.removeItem('user')
+      }
+    }
+    setIsLoading(false)
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<boolean> => {
+    setIsLoading(true)
+    
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // Simple validation (in real app, this would be an API call)
+      if (email && password.length >= 6) {
+        const userData: User = {
+          id: Date.now().toString(),
+          email,
+          name: email.split('@')[0]
+        }
+        
+        setUser(userData)
+        localStorage.setItem('user', JSON.stringify(userData))
+        setIsLoading(false)
+        
+        // Redirect to main page after successful login
+        setTimeout(() => {
+          router.push('/')
+        }, 100)
+        
+        return true
+      }
+      
+      setIsLoading(false)
+      return false
     } catch (error) {
-      throw new Error('Login failed. Please check your credentials.')
+      setIsLoading(false)
+      return false
     }
   }
 
-  const register = async (email: string, password: string) => {
+  const register = async (email: string, password: string, name: string): Promise<boolean> => {
+    setIsLoading(true)
+    
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // Simple validation (in real app, this would be an API call)
+      if (email && password.length >= 6 && name) {
+        const userData: User = {
+          id: Date.now().toString(),
+          email,
+          name
+        }
+        
+        setUser(userData)
+        localStorage.setItem('user', JSON.stringify(userData))
+        setIsLoading(false)
+        
+        // Redirect to main page after successful registration
+        setTimeout(() => {
+          router.push('/')
+        }, 100)
+        
+        return true
+      }
+      
+      setIsLoading(false)
+      return false
     } catch (error) {
-      throw new Error('Registration failed. Please try again.')
+      setIsLoading(false)
+      return false
     }
   }
 
-  const logout = async () => {
-    try {
-      await signOut(auth)
-    } catch (error) {
-      throw new Error('Logout failed. Please try again.')
-    }
+  const logout = () => {
+    setUser(null)
+    localStorage.removeItem('user')
+    router.push('/auth')
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{
+      user,
+      login,
+      register,
+      logout,
+      isLoading
+    }}>
       {children}
     </AuthContext.Provider>
   )
@@ -66,7 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
