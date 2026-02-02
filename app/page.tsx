@@ -6,9 +6,9 @@ import { motion } from 'framer-motion'
 import { Navigation, BarChart3, Menu, X, MapPin, TrendingUp, Clock, Route, LogOut, User } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
-import LocationForm from '@/components/LocationForm'
+import ImprovedLocationForm from '@/components/ImprovedLocationForm'
 import LocationList from '@/components/LocationList'
-import MapVisualization from '@/components/MapVisualization'
+import SimpleMapVisualization from '@/components/SimpleMapVisualization'
 import RouteDirections from '@/components/RouteDirections'
 import RouteAnalytics from '@/components/RouteAnalytics'
 import ProtectedRoute from '@/components/ProtectedRoute'
@@ -196,7 +196,7 @@ export default function HomePage() {
             {/* Left Column - Location Management */}
             <div className="space-y-8">
               <div id="locations">
-                <LocationForm />
+                <ImprovedLocationForm />
               </div>
               <div>
                 <LocationList />
@@ -206,7 +206,7 @@ export default function HomePage() {
             {/* Right Column - Visualization and Directions */}
             <div className="space-y-8">
               <div id="visualization">
-                <MapVisualization />
+                <SimpleMapVisualization />
               </div>
               <div id="directions">
                 <RouteDirections />
