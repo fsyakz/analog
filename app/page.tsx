@@ -8,7 +8,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import LocationForm from '@/components/LocationForm'
 import LocationList from '@/components/LocationList'
-import LocationQuickAdd from '@/components/LocationQuickAdd'
 import MapVisualization from '@/components/MapVisualization'
 import RouteDirections from '@/components/RouteDirections'
 import RouteAnalytics from '@/components/RouteAnalytics'
@@ -198,9 +197,6 @@ export default function HomePage() {
             <div className="space-y-8">
               <div id="locations">
                 <LocationForm />
-              </div>
-              <div>
-                <LocationQuickAdd />
               </div>
               <div>
                 <LocationList />
