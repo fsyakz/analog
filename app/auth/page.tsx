@@ -237,33 +237,21 @@ export default function AuthPage() {
             </button>
           </form>
 
-          {/* Demo Account */}
-          <div className="mt-6 p-4 bg-beige-50 rounded-lg border border-beige-200">
-            <p className="text-sm text-beige-800 mb-2">
-              <strong>Akun Demo:</strong>
-            </p>
-            <p className="text-xs text-beige-700">
-              Email: demo@routeoptimize.com<br />
-              Password: demo123
-            </p>
-          </div>
-
-          {/* Footer */}
+          {/* Switch between login and register */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-neutral-600">
-              {isLogin ? 'Belum punya akun?' : 'Sudah punya akun?'}{' '}
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                disabled={isSubmitting}
-                className="text-primary-600 hover:text-primary-700 font-medium disabled:opacity-50"
-              >
-                {isLogin ? 'Daftar' : 'Login'}
-              </button>
-            </p>
+            <button
+              onClick={() => {
+                setIsLogin(!isLogin)
+                setError('')
+                setFormData({ email: '', password: '', name: '' })
+              }}
+              className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+            >
+              {isLogin ? 'Belum punya akun? Daftar di sini' : 'Sudah punya akun? Masuk di sini'}
+            </button>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
