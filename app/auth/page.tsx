@@ -19,6 +19,7 @@ export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
 
   // Redirect if already logged in
   useEffect(() => {
@@ -42,13 +43,21 @@ export default function AuthPage() {
         }
       } else {
         success = await register(formData.email, formData.password, formData.name)
-        if (!success) {
+        if (success) {
+          setRegistrationSuccess(true)
+          // Switch to login mode after successful registration
+          setTimeout(() => {
+            setIsLogin(true)
+            setRegistrationSuccess(false)
+            setFormData({ email: '', password: '', name: '' })
+          }, 3000)
+        } else {
           setError('Registrasi gagal. Periksa kembali data Anda.')
         }
       }
 
       // If successful, the redirect will happen automatically from AuthContext
-      if (!success) {
+      if (!success && !registrationSuccess) {
         setIsSubmitting(false)
       }
     } catch (err) {
@@ -148,6 +157,16 @@ export default function AuthPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {registrationSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-green-100 border border-green-200 rounded-lg text-green-700 text-sm"
+              >
+                Akun berhasil dibuat! Silakan login dengan email dan password Anda.
+              </motion.div>
+            )}
+            
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}

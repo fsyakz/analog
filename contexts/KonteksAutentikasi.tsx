@@ -84,19 +84,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Simple validation (in real app, this would be an API call)
       if (email && password.length >= 6 && name) {
-        const userData: User = {
-          id: Date.now().toString(),
-          email,
-          name
-        }
-        
-        setUser(userData)
-        localStorage.setItem('user', JSON.stringify(userData))
+        // Don't automatically login after registration
+        // Just create the account and redirect to login
         setIsLoading(false)
         
-        // Redirect to main page after successful registration
+        // Redirect to login page after successful registration
         setTimeout(() => {
-          router.push('/')
+          router.push('/auth')
         }, 100)
         
         return true
