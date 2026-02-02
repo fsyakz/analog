@@ -123,7 +123,7 @@ export default function LocationQuickAdd() {
                       </div>
                       {isAdded && (
                         <div className="mt-2 text-xs text-green-600 font-medium">
-                          ✓ Sudah ditambahkan
+                          Sudah ditambahkan
                         </div>
                       )}
                     </motion.button>
@@ -136,7 +136,7 @@ export default function LocationQuickAdd() {
 
       <div className="mt-6 p-4 bg-beige-50 rounded-lg border border-beige-200">
         <p className="text-sm text-beige-800">
-          <strong>💡 Tips:</strong> Pilih lokasi strategis untuk optimasi rute terbaik. Lokasi yang sudah ditambahkan akan ditandai dengan warna hijau.
+          <strong>Tips:</strong> Pilih lokasi strategis untuk optimasi rute terbaik. Lokasi yang sudah ditambahkan akan ditandai dengan warna hijau.
         </p>
       </div>
     </motion.div>

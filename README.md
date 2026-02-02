@@ -2,16 +2,16 @@
 
 Aplikasi web modern untuk optimasi rute distribusi dengan React, Next.js, dan Firebase.
 
-## 🚀 Features
+## Features
 
-- ✅ **Authentication** - Login & Register dengan Firebase
-- ✅ **Route Optimization** - Algoritma Greedy Nearest Neighbor
-- ✅ **Real-time Visualization** - Peta interaktif dengan arahan
-- ✅ **Modern UI** - Beige & Dark Green theme dengan glassmorphism
-- ✅ **Responsive Design** - Mobile-first approach
-- ✅ **Vercel Ready** - Optimized untuk deployment
+- **Authentication** - Login & Register dengan Firebase
+- **Route Optimization** - Algoritma Greedy Nearest Neighbor
+- **Real-time Visualization** - Peta interaktif dengan arahan
+- **Modern UI** - Beige & Dark Green theme dengan glassmorphism
+- **Responsive Design** - Mobile-first approach
+- **Vercel Ready** - Optimized untuk deployment
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS, Framer Motion
@@ -20,7 +20,7 @@ Aplikasi web modern untuk optimasi rute distribusi dengan React, Next.js, dan Fi
 - **Icons**: Lucide React
 - **Deployment**: Vercel
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Clone repository
@@ -37,7 +37,7 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-## 🔧 Environment Variables
+## Environment Variables
 
 Buat file `.env.local` dengan konfigurasi berikut:
 
@@ -54,7 +54,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token_here
 ```
 
-## 🚀 Deployment ke Vercel
+## Deployment ke Vercel
 
 ### Cara 1: Melalui Vercel CLI
 
@@ -85,7 +85,7 @@ vercel
 
 2. Upload folder `.next` ke Vercel
 
-## 📱 Usage
+## Usage
 
 ### 1. Authentication
 - Buka `/auth` untuk login atau register
@@ -104,7 +104,7 @@ vercel
 - **Visualisasi**: Peta interaktif dengan rute
 - **Hasil**: Analisis detail optimasi
 
-## 🎨 Design System
+## Design System
 
 ### Color Palette
 - **Primary Green**: `#22c55e` - `#14532d`
@@ -116,7 +116,7 @@ vercel
 - **Animations**: Smooth transitions dengan Framer Motion
 - **Responsive**: Mobile-first design approach
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 route-optimize-react/
@@ -135,14 +135,14 @@ route-optimize-react/
 └── styles/              # CSS files
 ```
 
-## 🔥 Firebase Setup
+## Firebase Setup
 
 1. Buat project baru di [Firebase Console](https://console.firebase.google.com/)
 2. Enable Authentication (Email/Password)
 3. Setup Firestore database
 4. Copy konfigurasi ke `.env.local`
 
-## 🗺️ Map Setup
+## Map Setup
 
 1. Daftar ke [Mapbox](https://www.mapbox.com/)
 2. Buat access token
@@ -156,7 +156,7 @@ route-optimize-react/
 4. Push ke branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-## 📄 License
+## License
 
 MIT License - lihat [LICENSE](LICENSE) file untuk detail.
 
@@ -179,7 +179,7 @@ MIT License - lihat [LICENSE](LICENSE) file untuk detail.
 - Implement lazy loading untuk components
 - Optimize bundle size dengan dynamic imports
 
-## 📞 Support
+## Support
 
 Hubungi:
 - Email: support@routeoptimize.com
@@ -187,4 +187,4 @@ Hubungi:
 
 ---
 
-**Built with ❤️ using Next.js, React, and Firebase**
+**Built with passion using Next.js, React, and Firebase**
